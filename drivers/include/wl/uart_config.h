@@ -14,6 +14,10 @@
 #include <rtthread.h>
 #include <board.h>
 
+#ifdef RT_SERIAL_USING_DMA
+#include "dma_config.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -75,6 +79,18 @@ extern "C" {
         .request  = UART1_RX_DMA_REQUEST,                           \
         .dma_rcc  = UART1_RX_DMA_RCC,                               \
         .dma_irq  = UART1_RX_DMA_IRQ,                               \
+    }
+#endif /* UART1_DMA_RX_CONFIG */
+#endif /* BSP_UART1_RX_USING_DMA */
+
+#if defined(BSP_UART1_RX_USING_DMA)
+#ifndef UART1_DMA_TX_CONFIG
+#define UART1_DMA_TX_CONFIG                                            \
+    {                                                               \
+        .Instance = UART1_TX_DMA_INSTANCE,                          \
+        .request  = UART1_TX_DMA_REQUEST,                           \
+        .dma_rcc  = UART1_TX_DMA_RCC,                               \
+        .dma_irq  = UART1_TX_DMA_IRQ,                               \
     }
 #endif /* UART1_DMA_RX_CONFIG */
 #endif /* BSP_UART1_RX_USING_DMA */
