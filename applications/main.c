@@ -11,6 +11,7 @@
 #include <rtthread.h>
 #include "led_sample.h"
 #include "uart_dma_sample.h"
+#include "alarm_sample.h"
 #include "alex.h"
 
 #define DBG_TAG "main"
@@ -51,6 +52,8 @@ int main(void)
     led_sample_start();
     /* 启动uart_dma线程,优先级20  */
     uart_dma_sample_start();
+    /* 启动alarm线程,优先级18 */
+    alarm_sample_start();
 //    /* 启动oled线程,优先级23  */
 //    oled_sample_start();
 //    /* 启动RTC线程,优先级18 */

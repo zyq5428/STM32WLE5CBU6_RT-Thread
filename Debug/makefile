@@ -11,10 +11,13 @@ RM := rm -rf
 -include rt-thread/src/subdir.mk
 -include rt-thread/libcpu/arm/cortex-m4/subdir.mk
 -include rt-thread/libcpu/arm/common/subdir.mk
+-include rt-thread/components/utilities/ulog/backend/subdir.mk
+-include rt-thread/components/utilities/ulog/subdir.mk
 -include rt-thread/components/libc/compilers/newlib/subdir.mk
 -include rt-thread/components/libc/compilers/common/subdir.mk
 -include rt-thread/components/finsh/subdir.mk
 -include rt-thread/components/drivers/serial/subdir.mk
+-include rt-thread/components/drivers/rtc/subdir.mk
 -include rt-thread/components/drivers/misc/subdir.mk
 -include rt-thread/components/drivers/ipc/subdir.mk
 -include libraries/STM32WLxx_HAL_Driver/Src/subdir.mk

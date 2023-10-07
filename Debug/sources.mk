@@ -27,10 +27,13 @@ libraries/CMSIS/Device/ST/STM32WLxx/Source/Templates \
 libraries/STM32WLxx_HAL_Driver/Src \
 rt-thread/components/drivers/ipc \
 rt-thread/components/drivers/misc \
+rt-thread/components/drivers/rtc \
 rt-thread/components/drivers/serial \
 rt-thread/components/finsh \
 rt-thread/components/libc/compilers/common \
 rt-thread/components/libc/compilers/newlib \
+rt-thread/components/utilities/ulog/backend \
+rt-thread/components/utilities/ulog \
 rt-thread/libcpu/arm/common \
 rt-thread/libcpu/arm/cortex-m4 \
 rt-thread/src \

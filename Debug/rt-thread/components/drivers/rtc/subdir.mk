@@ -4,31 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../rt-thread/components/libc/compilers/common/cctype.c \
-../rt-thread/components/libc/compilers/common/cstdio.c \
-../rt-thread/components/libc/compilers/common/cstdlib.c \
-../rt-thread/components/libc/compilers/common/cstring.c \
-../rt-thread/components/libc/compilers/common/ctime.c \
-../rt-thread/components/libc/compilers/common/cwchar.c 
+../rt-thread/components/drivers/rtc/alarm.c \
+../rt-thread/components/drivers/rtc/rtc.c 
 
 OBJS += \
-./rt-thread/components/libc/compilers/common/cctype.o \
-./rt-thread/components/libc/compilers/common/cstdio.o \
-./rt-thread/components/libc/compilers/common/cstdlib.o \
-./rt-thread/components/libc/compilers/common/cstring.o \
-./rt-thread/components/libc/compilers/common/ctime.o \
-./rt-thread/components/libc/compilers/common/cwchar.o 
+./rt-thread/components/drivers/rtc/alarm.o \
+./rt-thread/components/drivers/rtc/rtc.o 
 
 C_DEPS += \
-./rt-thread/components/libc/compilers/common/cctype.d \
-./rt-thread/components/libc/compilers/common/cstdio.d \
-./rt-thread/components/libc/compilers/common/cstdlib.d \
-./rt-thread/components/libc/compilers/common/cstring.d \
-./rt-thread/components/libc/compilers/common/ctime.d \
-./rt-thread/components/libc/compilers/common/cwchar.d 
+./rt-thread/components/drivers/rtc/alarm.d \
+./rt-thread/components/drivers/rtc/rtc.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-rt-thread/components/libc/compilers/common/%.o: ../rt-thread/components/libc/compilers/common/%.c
+rt-thread/components/drivers/rtc/%.o: ../rt-thread/components/drivers/rtc/%.c
 	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=soft -O0 -ffunction-sections -fdata-sections -Wall  -g -gdwarf-2 -DSOC_FAMILY_STM32 -DSOC_SERIES_STM32WL -DUSE_HAL_DRIVER -DSTM32WLE5xx -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\drivers" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\drivers\include" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\drivers\include\wl" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\libraries\CMSIS\Device\ST\STM32WLxx\Include" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\libraries\CMSIS\Include" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\libraries\CMSIS\RTOS\Template" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\libraries\STM32WLxx_HAL_Driver\Inc" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\libraries\STM32WLxx_HAL_Driver\Inc\Legacy" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\applications" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\cubemx" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\cubemx\Inc" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\drivers\include" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\finsh" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\libc\compilers\common\include" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\libc\compilers\newlib" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\libc\posix\io\poll" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\libc\posix\io\stdio" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\libc\posix\ipc" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\components\utilities\ulog" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\include" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\libcpu\arm\common" -I"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rt-thread\libcpu\arm\cortex-m4" -include"D:\RT-ThreadStudio\workspace\STM32WLE5CBU6_RT-Thread\rtconfig_preinc.h" -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
 

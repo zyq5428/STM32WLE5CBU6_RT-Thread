@@ -244,7 +244,7 @@ static rt_err_t stm32_rtc_init(void)
     return RT_EOK;
 }
 
-static rt_err_t stm32_rtc_get_secs(void *args)
+static rt_err_t stm32_rtc_get_secs(time_t *args)
 {
     struct timeval tv;
     get_rtc_timeval(&tv);
@@ -254,7 +254,7 @@ static rt_err_t stm32_rtc_get_secs(void *args)
     return RT_EOK;
 }
 
-static rt_err_t stm32_rtc_set_secs(void *args)
+static rt_err_t stm32_rtc_set_secs(time_t *args)
 {
     rt_err_t result = RT_EOK;
 
@@ -267,7 +267,7 @@ static rt_err_t stm32_rtc_set_secs(void *args)
     return result;
 }
 
-static rt_err_t stm32_rtc_get_timeval(void *args)
+static rt_err_t stm32_rtc_get_timeval(struct timeval *args)
 {
     get_rtc_timeval((struct timeval *) args);
 
