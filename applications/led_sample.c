@@ -25,6 +25,7 @@ static void led_entry(void *parameter)
     LOG_D("LED pin num is: %d", led_pin_num);
     /* 引脚为输出模式 */
     rt_pin_mode(led_pin_num, PIN_MODE_OUTPUT);
+    rt_pin_mode(BLUE_LED_PIN, PIN_MODE_OUTPUT);
     /* 默认低电平(LED OFF) */
     rt_pin_write(led_pin_num, PIN_LOW);
 

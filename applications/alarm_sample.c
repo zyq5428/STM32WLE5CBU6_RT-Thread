@@ -5,6 +5,7 @@
 
 #include <rtthread.h>
 #include <rtdevice.h>
+#include <board.h>
 
 #define DBG_TAG "alarm_sample"
 #define DBG_LVL DBG_INFO
@@ -16,9 +17,21 @@
 
 static rt_thread_t tid = RT_NULL;
 
+#define BLUE_LED_PIN        GET_PIN(B, 5)
+
 void user_alarm_callback(rt_alarm_t alarm, time_t timestamp)
 {
-    rt_kprintf("user alarm callback function.\n");
+    static rt_uint8_t pin_statu = 0;
+//    rt_kprintf("user alarm callback function.\n");
+    if (pin_statu == 0)
+    {
+        rt_pin_write(BLUE_LED_PIN, PIN_LOW);
+        pin_statu = 1;
+    }
+    else {
+        rt_pin_write(BLUE_LED_PIN, PIN_HIGH);
+        pin_statu = 0;
+    }
 }
 
 static void alarm_sample(void *parameter)
@@ -41,10 +54,10 @@ static void alarm_sample(void *parameter)
         return;
 
     /* 获取当前时间戳，并把下一秒时间设置为闹钟时间 */
-    now = time(NULL) + 1;
+    now = time(NULL) + 3;
     gmtime_r(&now,&p_tm);
 
-    setup.flag = RT_ALARM_SECOND;
+    setup.flag = RT_ALARM_MINUTE;
     setup.wktime.tm_year = p_tm.tm_year;
     setup.wktime.tm_mon = p_tm.tm_mon;
     setup.wktime.tm_mday = p_tm.tm_mday;
