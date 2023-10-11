@@ -16,66 +16,88 @@
 */
 
 #include <rtthread.h>
+#include "alex.h"
 
 #define DBG_TAG "uart_dma_sample"
 #define DBG_LVL DBG_INFO
 #include <rtdbg.h>
 
-#define THREAD_PRIORITY         20
-#define THREAD_STACK_SIZE       1024
+#define THREAD_PRIORITY         16
+#define THREAD_STACK_SIZE       2048
 #define THREAD_TIMESLICE        10
+
+static rt_thread_t tid1 = RT_NULL;
 
 #define SAMPLE_UART_NAME       "uart1"      /* 串口设备名称 */
 
-/* 串口接收消息结构*/
-struct rx_msg
-{
-    rt_device_t dev;
-    rt_size_t size;
-};
 /* 串口设备句柄 */
 static rt_device_t serial;
-/* 消息队列控制块 */
-static struct rt_messagequeue rx_mq;
 
 /* 接收数据回调函数 */
 static rt_err_t uart_input(rt_device_t dev, rt_size_t size)
 {
-    struct rx_msg msg;
+    send_msg_t msg;
     rt_err_t result;
-    msg.dev = dev;
-    msg.size = size;
+    rt_uint16_t rx_length, putsize;
 
-    result = rt_mq_send(&rx_mq, &msg, sizeof(msg));
+    static rt_uint8_t rx_buffer[RT_SERIAL_RB_BUFSZ];
+    rx_length = rt_device_read(dev, 0, rx_buffer, size);
+    LOG_HEX("UART-RX", 16, rx_buffer, size);
+
+    LOG_I("write ringbuffer size: %d", rx_length);
+    putsize = rt_ringbuffer_put(lora_tx_rb, (rt_uint8_t *)rx_buffer, rx_length);
+    if (putsize != rx_length)
+    {
+        LOG_E("lora tx ringbuffer full!");
+        msg.size = putsize;
+    }
+    else
+    {
+        msg.size = rx_length;
+    }
+    msg.dev = dev;
+    msg.type = MSG_TYPE_DATA;
+
+    LOG_I("msg data size: %d", msg.size);
+    result = rt_mq_send(&lora_tx_mq, &msg, sizeof(msg));
     if ( result == -RT_EFULL)
     {
-        /* 消息队列满 */
-        rt_kprintf("message queue full！\n");
+        LOG_E("Lora TX message queue full!");
     }
     return result;
 }
 
 static void serial_thread_entry(void *parameter)
 {
-    struct rx_msg msg;
+    send_msg_t msg;
     rt_err_t result;
-    rt_uint32_t rx_length;
-    static char rx_buffer[RT_SERIAL_RB_BUFSZ + 1];
+    static rt_uint8_t tx_buffer[RT_SERIAL_RB_BUFSZ];
 
     while (1)
     {
         rt_memset(&msg, 0, sizeof(msg));
-        /* 从消息队列中读取消息*/
-        result = rt_mq_recv(&rx_mq, &msg, sizeof(msg), RT_WAITING_FOREVER);
+        result = rt_mq_recv(&uart_tx_mq, &msg, sizeof(msg), RT_WAITING_FOREVER);
         if (result == RT_EOK)
         {
-            /* 从串口读取数据*/
-            rx_length = rt_device_read(msg.dev, 0, rx_buffer, msg.size);
-            rx_buffer[rx_length] = '\0';
-            /* 通过串口设备 serial 输出读取到的消息 */
-            rt_device_write(serial, 0, rx_buffer, rx_length);
-            /* 打印数据 */
-            rt_kprintf("%s\n",rx_buffer);
+            do
+            {
+                if (RT_SERIAL_RB_BUFSZ >= msg.size)
+                {
+                    rt_ringbuffer_get(uart_tx_rb, tx_buffer, msg.size);
+                    /* Output messages through serial device */
+                    LOG_HEX("UART-TX", 16, tx_buffer, msg.size);
+                    rt_device_write(serial, 0, tx_buffer, msg.size);
+                    msg.size = 0;
+                }
+                else
+                {
+                    rt_ringbuffer_get(uart_tx_rb, tx_buffer, RT_SERIAL_RB_BUFSZ);
+                    /* Output messages through serial device */
+                    LOG_HEX("UART-TX", 16, tx_buffer, RT_SERIAL_RB_BUFSZ);
+                    rt_device_write(serial, 0, tx_buffer, RT_SERIAL_RB_BUFSZ);
+                    msg.size= msg.size - RT_SERIAL_RB_BUFSZ;
+                }
+            } while(msg.size);
         }
     }
 }
@@ -83,43 +105,31 @@ static void serial_thread_entry(void *parameter)
 int uart_dma_sample_start(void)
 {
     rt_err_t ret = RT_EOK;
-    char uart_name[RT_NAME_MAX] = SAMPLE_UART_NAME;
-    static char msg_pool[256];
-    static char str[] = "hello RT-Thread!\r\n";
+//    static char str[] = "UART DMA Sample\r\n";
 
     /* 查找串口设备 */
-    serial = rt_device_find(uart_name);
+    serial = rt_device_find(SAMPLE_UART_NAME);
     if (!serial)
     {
-        rt_kprintf("find %s failed!\n", uart_name);
+        LOG_E("find %s failed!\n", SAMPLE_UART_NAME);
         return RT_ERROR;
     }
 
-    /* 初始化消息队列 */
-    rt_mq_init(&rx_mq, "rx_mq",
-               msg_pool,                 /* 存放消息的缓冲区 */
-               sizeof(struct rx_msg),    /* 一条消息的最大长度 */
-               sizeof(msg_pool),         /* 存放消息的缓冲区大小 */
-               RT_IPC_FLAG_FIFO);        /* 如果有多个线程等待，按照先来先得到的方法分配消息 */
-
-    /* 以 DMA 接收及轮询发送方式打开串口设备 */
+    /* 以 DMA接收及DMA发送方式打开串口设备 */
     rt_device_open(serial, RT_DEVICE_FLAG_DMA_RX | RT_DEVICE_FLAG_DMA_TX);
     /* 设置接收回调函数 */
     rt_device_set_rx_indicate(serial, uart_input);
-    /* 发送字符串 */
-    rt_device_write(serial, 0, str, (sizeof(str) - 1));
 
     /* 创建 serial 线程 */
-    rt_thread_t thread = rt_thread_create("uart_dma",
-                                          serial_thread_entry,
-                                          RT_NULL,
-                                          THREAD_STACK_SIZE,
-                                          THREAD_PRIORITY,
-                                          THREAD_TIMESLICE);
+    tid1 = rt_thread_create("serial", serial_thread_entry,
+                            RT_NULL,
+                            THREAD_STACK_SIZE,
+                            THREAD_PRIORITY,
+                            THREAD_TIMESLICE);
     /* 创建成功则启动线程 */
-    if (thread != RT_NULL)
+    if (tid1 != RT_NULL)
     {
-        rt_thread_startup(thread);
+        rt_thread_startup(tid1);
     }
     else
     {

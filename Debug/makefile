@@ -25,6 +25,10 @@ RM := rm -rf
 -include libraries/CMSIS/Device/ST/STM32WLxx/Source/Templates/subdir.mk
 -include drivers/subdir.mk
 -include cubemx/Src/subdir.mk
+-include applications/SubGHz/common/subdir.mk
+-include applications/SubGHz/Target/subdir.mk
+-include applications/SubGHz/SubGHz_Phy/stm32_radio_driver/subdir.mk
+-include applications/SubGHz/App/subdir.mk
 -include applications/subdir.mk
 -include subdir.mk
 -include objects.mk

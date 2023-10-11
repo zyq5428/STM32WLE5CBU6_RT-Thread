@@ -19,6 +19,10 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+applications/SubGHz/App \
+applications/SubGHz/SubGHz_Phy/stm32_radio_driver \
+applications/SubGHz/Target \
+applications/SubGHz/common \
 applications \
 cubemx/Src \
 drivers \

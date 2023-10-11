@@ -144,21 +144,21 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* hrtc)
 * @param hsubghz: SUBGHZ handle pointer
 * @retval None
 */
-void HAL_SUBGHZ_MspInit(SUBGHZ_HandleTypeDef* hsubghz)
-{
-  /* USER CODE BEGIN SUBGHZ_MspInit 0 */
-
-  /* USER CODE END SUBGHZ_MspInit 0 */
-    /* Peripheral clock enable */
-    __HAL_RCC_SUBGHZSPI_CLK_ENABLE();
-    /* SUBGHZ interrupt Init */
-    HAL_NVIC_SetPriority(SUBGHZ_Radio_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(SUBGHZ_Radio_IRQn);
-  /* USER CODE BEGIN SUBGHZ_MspInit 1 */
-
-  /* USER CODE END SUBGHZ_MspInit 1 */
-
-}
+//void HAL_SUBGHZ_MspInit(SUBGHZ_HandleTypeDef* hsubghz)
+//{
+//  /* USER CODE BEGIN SUBGHZ_MspInit 0 */
+//
+//  /* USER CODE END SUBGHZ_MspInit 0 */
+//    /* Peripheral clock enable */
+//    __HAL_RCC_SUBGHZSPI_CLK_ENABLE();
+//    /* SUBGHZ interrupt Init */
+//    HAL_NVIC_SetPriority(SUBGHZ_Radio_IRQn, 0, 0);
+//    HAL_NVIC_EnableIRQ(SUBGHZ_Radio_IRQn);
+//  /* USER CODE BEGIN SUBGHZ_MspInit 1 */
+//
+//  /* USER CODE END SUBGHZ_MspInit 1 */
+//
+//}
 
 /**
 * @brief SUBGHZ MSP De-Initialization
@@ -166,21 +166,21 @@ void HAL_SUBGHZ_MspInit(SUBGHZ_HandleTypeDef* hsubghz)
 * @param hsubghz: SUBGHZ handle pointer
 * @retval None
 */
-void HAL_SUBGHZ_MspDeInit(SUBGHZ_HandleTypeDef* hsubghz)
-{
-  /* USER CODE BEGIN SUBGHZ_MspDeInit 0 */
-
-  /* USER CODE END SUBGHZ_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_SUBGHZSPI_CLK_DISABLE();
-
-    /* SUBGHZ interrupt DeInit */
-    HAL_NVIC_DisableIRQ(SUBGHZ_Radio_IRQn);
-  /* USER CODE BEGIN SUBGHZ_MspDeInit 1 */
-
-  /* USER CODE END SUBGHZ_MspDeInit 1 */
-
-}
+//void HAL_SUBGHZ_MspDeInit(SUBGHZ_HandleTypeDef* hsubghz)
+//{
+//  /* USER CODE BEGIN SUBGHZ_MspDeInit 0 */
+//
+//  /* USER CODE END SUBGHZ_MspDeInit 0 */
+//    /* Peripheral clock disable */
+//    __HAL_RCC_SUBGHZSPI_CLK_DISABLE();
+//
+//    /* SUBGHZ interrupt DeInit */
+//    HAL_NVIC_DisableIRQ(SUBGHZ_Radio_IRQn);
+//  /* USER CODE BEGIN SUBGHZ_MspDeInit 1 */
+//
+//  /* USER CODE END SUBGHZ_MspDeInit 1 */
+//
+//}
 
 /**
 * @brief UART MSP Initialization

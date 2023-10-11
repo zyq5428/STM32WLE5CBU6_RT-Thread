@@ -73,6 +73,11 @@
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/applications}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/cubemx}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/cubemx/Inc}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/applications/SubGHz/App}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/applications/SubGHz/common}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/applications/SubGHz/SubGHz_Phy}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/applications/SubGHz/Target}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}/applications/SubGHz/SubGHz_Phy/stm32_radio_driver}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//.}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//rt-thread/components/drivers/include}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//rt-thread/components/finsh}&quot;" />

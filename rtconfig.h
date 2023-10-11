@@ -84,7 +84,7 @@
 #define RT_USING_SERIAL
 #define RT_USING_SERIAL_V1
 #define RT_SERIAL_USING_DMA
-#define RT_SERIAL_RB_BUFSZ 512
+#define RT_SERIAL_RB_BUFSZ 1024
 #define RT_USING_PIN
 #define RT_USING_RTC
 #define RT_USING_ALARM
@@ -119,6 +119,7 @@
 #define RT_USING_ULOG
 #define ULOG_OUTPUT_LVL_D
 #define ULOG_OUTPUT_LVL 7
+#define ULOG_USING_ISR_LOG
 #define ULOG_ASSERT_ENABLE
 #define ULOG_LINE_BUF_SIZE 128
 
@@ -319,6 +320,8 @@
 #define BSP_USING_UART2
 #define BSP_UART2_RX_BUFSIZE 256
 #define BSP_UART2_TX_BUFSIZE 0
+#define BSP_USING_SUBGHZ
+#define LORA_RADIO_DRIVER_USING_RTOS_RT_THREAD
 /* end of On-chip Peripheral Drivers */
 
 /* Board extended module Drivers */
