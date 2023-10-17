@@ -44,7 +44,7 @@ static rt_err_t uart_input(rt_device_t dev, rt_size_t size)
     rx_length = rt_device_read(dev, 0, rx_buffer, size);
     LOG_HEX("UART-RX", 16, rx_buffer, size);
 
-    LOG_I("write ringbuffer size: %d", rx_length);
+    LOG_D("write ringbuffer size: %d", rx_length);
     putsize = rt_ringbuffer_put(lora_tx_rb, (rt_uint8_t *)rx_buffer, rx_length);
     if (putsize != rx_length)
     {
@@ -58,7 +58,7 @@ static rt_err_t uart_input(rt_device_t dev, rt_size_t size)
     msg.dev = dev;
     msg.type = MSG_TYPE_DATA;
 
-    LOG_I("msg data size: %d", msg.size);
+    LOG_D("msg data size: %d", msg.size);
     result = rt_mq_send(&lora_tx_mq, &msg, sizeof(msg));
     if ( result == -RT_EFULL)
     {
